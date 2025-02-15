@@ -1,37 +1,71 @@
+import { useReducer, useEffect } from 'react';
 
-import { useReducer } from 'react';
-
-// Define the initial state for the cart.
-const initialCartState = {
-  items: [],
-  total: 0,
+// Get initial state from localStorage or use default
+const getInitialState = () => {
+  const savedCart = localStorage.getItem('cart');
+  return savedCart ? JSON.parse(savedCart) : {
+    items: [],
+    total: 0,
+  };
 };
 
-// The reducer function handles different action types.
+// The reducer function handles different action types
 function cartReducer(state, action) {
+  let newState;
+  
   switch (action.type) {
     case 'ADD_ITEM': {
-      const updatedItems = [...state.items, action.payload];
-      const updatedTotal = state.total + action.payload.price;
-      return { items: updatedItems, total: updatedTotal };
+      // Check if item already exists
+      const existingItem = state.items.find(item => item.id === action.payload.id);
+      
+      let updatedItems;
+      if (existingItem) {
+        // If item exists, increment quantity
+        updatedItems = state.items.map(item =>
+          item.id === action.payload.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        // If item is new, add it with quantity 1
+        updatedItems = [...state.items, { ...action.payload, quantity: 1 }];
+      }
+      
+      const updatedTotal = updatedItems.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
+      
+      newState = { items: updatedItems, total: updatedTotal };
+      break;
     }
+    
     case 'REMOVE_ITEM': {
-      const itemToRemove = state.items.find(item => item.id === action.payload);
-      if (!itemToRemove) return state;
       const updatedItems = state.items.filter(item => item.id !== action.payload);
-      const updatedTotal = state.total - itemToRemove.price;
-      return { items: updatedItems, total: updatedTotal };
+      const updatedTotal = updatedItems.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
+      newState = { items: updatedItems, total: updatedTotal };
+      break;
     }
+    
     case 'CLEAR_CART':
-      return initialCartState;
+      newState = { items: [], total: 0 };
+      break;
+      
     default:
       return state;
   }
+  
+  // Save to localStorage after each update
+  localStorage.setItem('cart', JSON.stringify(newState));
+  return newState;
 }
 
-// Custom hook exposing cart state and dispatch functions.
+// Custom hook exposing cart state and dispatch functions
 const useCartReducer = () => {
-  const [state, dispatch] = useReducer(cartReducer, initialCartState);
+  const [state, dispatch] = useReducer(cartReducer, null, getInitialState);
 
   const addItem = (item) => dispatch({ type: 'ADD_ITEM', payload: item });
   const removeItem = (id) => dispatch({ type: 'REMOVE_ITEM', payload: id });

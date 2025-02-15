@@ -1,0 +1,1 @@
+ - A minimal approach to using React  in our e-commerce app. No backend

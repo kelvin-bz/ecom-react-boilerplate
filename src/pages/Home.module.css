@@ -1,9 +1,108 @@
 .home {
   padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-bottom: 40px; /* Spacing between sections */
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: inherit;
+  padding: 10px 0;
+}
+
+.sectionHeader:hover {
+  color: #007bff;
+}
+
+.sectionHeader h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.viewAll {
+  font-size: 0.9rem;
+  color: #007bff;
+}
+
+.carouselContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 40px; /* Space for arrow buttons */
 }
 
 .productGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  display: flex;
   gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  padding: 10px 0;
+  width: 100%;
+}
+
+/* Show 4 products at a time */
+.productGrid > * {
+  flex: 0 0 280px; /* Same as ProductCard width */
+}
+
+.productGrid::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.scrollButton {
+  position: absolute;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: white;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.scrollButton:hover {
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.scrollLeft {
+  left: 0;
+}
+
+.scrollRight {
+  right: 0;
+}
+
+@media (max-width: 768px) {
+  .home {
+    padding: 10px;
+  }
+  
+  .sectionHeader h2 {
+    font-size: 1.2rem;
+  }
+
+  .scrollButton {
+    width: 30px;
+    height: 30px;
+  }
+
+  .carouselContainer {
+    padding: 0 30px;
+  }
 }
