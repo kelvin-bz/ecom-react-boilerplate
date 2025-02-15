@@ -1,0 +1,36 @@
+.banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+    max-width: 1200px;
+  }
+  
+  .mainBanner {
+    width: 100%;
+    background: linear-gradient(to right, #ff6b6b, #ffa502);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+  }
+  
+  .sideBanners {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .sideBanner {
+    flex: 1;
+    background: #ffcc70;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+  }
+  
