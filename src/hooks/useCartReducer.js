@@ -15,20 +15,19 @@ function cartReducer(state, action) {
   
   switch (action.type) {
     case 'ADD_ITEM': {
-      // Check if item already exists
       const existingItem = state.items.find(item => item.id === action.payload.id);
       
       let updatedItems;
       if (existingItem) {
-        // If item exists, increment quantity
+        // If item exists, add the new quantity to existing quantity
         updatedItems = state.items.map(item =>
           item.id === action.payload.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity + action.payload.quantity }
             : item
         );
       } else {
-        // If item is new, add it with quantity 1
-        updatedItems = [...state.items, { ...action.payload, quantity: 1 }];
+        // If item is new, add it with the specified quantity
+        updatedItems = [...state.items, action.payload];
       }
       
       const updatedTotal = updatedItems.reduce(

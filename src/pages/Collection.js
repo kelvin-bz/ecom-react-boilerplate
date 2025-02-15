@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import styles from './Collection.module.css';
 
 const Collection = ({ type }) => {
   const { id } = useParams();
-  const location = useLocation();
   const [collection, setCollection] = useState(null);
   const [products, setProducts] = useState([]);
 
@@ -33,13 +32,18 @@ const Collection = ({ type }) => {
       description: `Explore our ${collectionTitle.toLowerCase()} collection.`,
     });
 
-    // Here you would typically fetch products based on the collection type
-    // For now, using sample data
+    // Sample data without images
     setProducts([
-      { id: 1, name: 'Product 1', price: 19.99, image: 'https://via.placeholder.com/200' },
-      { id: 2, name: 'Product 2', price: 24.99, image: 'https://via.placeholder.com/200' },
-      { id: 3, name: 'Product 3', price: 29.99, image: 'https://via.placeholder.com/200' },
-      // Add more products...
+      { id: 1, name: 'Product 1', price: 19.99 },
+      { id: 2, name: 'Product 2', price: 24.99 },
+      { id: 3, name: 'Product 3', price: 29.99 },
+      { id: 4, name: 'Product 4', price: 34.99 },
+      { id: 5, name: 'Product 5', price: 39.99 },
+      { id: 6, name: 'Product 6', price: 44.99 },
+      { id: 7, name: 'Product 7', price: 49.99 },
+      { id: 8, name: 'Product 8', price: 54.99 },
+      { id: 9, name: 'Product 9', price: 59.99 },
+      { id: 10, name: 'Product 10', price: 64.99 },
     ]);
   }, [id, type]);
 

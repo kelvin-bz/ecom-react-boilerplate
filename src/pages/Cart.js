@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import styles from './Cart.module.css';
 
 const Cart = () => {
   const { items, total, removeItem } = useCart();
+  const navigate = useNavigate(); // Hook to navigate on click
 
   if (items.length === 0) {
     return (
@@ -18,24 +19,28 @@ const Cart = () => {
     );
   }
 
+  const handleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
+  };
+
   return (
     <div className={styles.cart}>
       <h1>Your Cart</h1>
       <div className={styles.cartItems}>
         {items.map((item) => (
-          <div key={item.id} className={styles.cartItem}>
-            <img 
-              src={item.image} 
-              alt={item.name} 
-              className={styles.itemImage}
-            />
+          <div 
+            key={item.id} 
+            className={styles.cartItem} 
+            onClick={() => handleProductClick(item.id)}
+          >
+            <div className={styles.greyBox}></div> {/* Grey Box Instead of Image */}
             <div className={styles.itemDetails}>
-              <h3>{item.name}</h3>
+              <h3 className={styles.clickableTitle}>{item.name}</h3>
               <p>Quantity: {item.quantity}</p>
               <p>Price: ${item.price}</p>
               <p>Subtotal: ${(item.price * item.quantity).toFixed(2)}</p>
               <button 
-                onClick={() => removeItem(item.id)}
+                onClick={(e) => { e.stopPropagation(); removeItem(item.id); }}
                 className={styles.removeButton}
               >
                 Remove
