@@ -4,7 +4,7 @@ import ProductCard from '../components/ProductCard';
 import { useCart } from '../context/CartContext';
 import styles from './ProductDetails.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faMinus, faPlus, faTruck, faShieldAlt, faUndo } from '@fortawesome/free-solid-svg-icons';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -14,14 +14,34 @@ const ProductDetails = () => {
   const { addItem } = useCart();
   const [showPopup, setShowPopup] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [selectedTab, setSelectedTab] = useState('description');
 
   useEffect(() => {
     // Example only: Replace with API call
     setProduct({
       id: parseInt(id),
       name: `Sample Product ${id}`,
-      description: 'This is a description of the sample product.',
       price: 49.99,
+      description: 'This is a high-quality product designed for maximum comfort and durability.',
+      details: {
+        material: 'Premium cotton blend',
+        care: 'Machine washable, tumble dry low',
+        dimensions: '10" x 8" x 2"',
+        weight: '0.5 lbs',
+        origin: 'Made in USA'
+      },
+      features: [
+        'Breathable fabric for all-day comfort',
+        'Reinforced stitching for durability',
+        'Available in multiple sizes and colors',
+        'Water-resistant finish',
+        'Eco-friendly materials'
+      ],
+      shipping: {
+        time: '2-4 business days',
+        cost: 'Free shipping on orders over $50',
+        returns: '30-day easy returns'
+      }
     });
 
     setRelatedProducts([
@@ -62,7 +82,6 @@ const ProductDetails = () => {
         <div className={styles.greyBox}></div> {/* Grey Box Instead of Image */}
         <div className={styles.productInfo}>
           <h1 className={styles.productTitle}>{product.name}</h1>
-          <p className={styles.productDescription}>{product.description}</p>
           <span className={styles.productPrice}>${product.price}</span>
           
           {/* Quantity Selector */}
@@ -86,6 +105,82 @@ const ProductDetails = () => {
           <button onClick={handleAddToCart} className={styles.addToCartButton}>
             Add to Cart - ${(product.price * quantity).toFixed(2)}
           </button>
+
+          {/* Shipping Info */}
+          <div className={styles.shippingInfo}>
+            <div className={styles.infoItem}>
+              <FontAwesomeIcon icon={faTruck} />
+              <span>Fast Delivery</span>
+            </div>
+            <div className={styles.infoItem}>
+              <FontAwesomeIcon icon={faShieldAlt} />
+              <span>Quality Guarantee</span>
+            </div>
+            <div className={styles.infoItem}>
+              <FontAwesomeIcon icon={faUndo} />
+              <span>Easy Returns</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Product Details Tabs */}
+      <div className={styles.productDetails}>
+        <div className={styles.tabs}>
+          <button 
+            className={`${styles.tab} ${selectedTab === 'description' ? styles.active : ''}`}
+            onClick={() => setSelectedTab('description')}
+          >
+            Description
+          </button>
+          <button 
+            className={`${styles.tab} ${selectedTab === 'features' ? styles.active : ''}`}
+            onClick={() => setSelectedTab('features')}
+          >
+            Features
+          </button>
+          <button 
+            className={`${styles.tab} ${selectedTab === 'shipping' ? styles.active : ''}`}
+            onClick={() => setSelectedTab('shipping')}
+          >
+            Shipping
+          </button>
+        </div>
+
+        <div className={styles.tabContent}>
+          {selectedTab === 'description' && (
+            <div>
+              <p className={styles.description}>{product.description}</p>
+              <div className={styles.specifications}>
+                <h3>Specifications</h3>
+                <ul>
+                  <li><strong>Material:</strong> {product.details.material}</li>
+                  <li><strong>Care:</strong> {product.details.care}</li>
+                  <li><strong>Dimensions:</strong> {product.details.dimensions}</li>
+                  <li><strong>Weight:</strong> {product.details.weight}</li>
+                  <li><strong>Origin:</strong> {product.details.origin}</li>
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {selectedTab === 'features' && (
+            <div className={styles.features}>
+              <ul>
+                {product.features.map((feature, index) => (
+                  <li key={index}>{feature}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {selectedTab === 'shipping' && (
+            <div className={styles.shipping}>
+              <p><strong>Delivery Time:</strong> {product.shipping.time}</p>
+              <p><strong>Shipping Cost:</strong> {product.shipping.cost}</p>
+              <p><strong>Returns Policy:</strong> {product.shipping.returns}</p>
+            </div>
+          )}
         </div>
       </div>
 
