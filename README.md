@@ -1,5 +1,9 @@
 # E-Commerce React App  
 
+![E-Shop Home](img/home.png)
+
+![E-Shop Profile](img/profile.png)
+
 A **React-based** e-commerce template featuring product browsing, cart management, fake authentication, and a simple checkout flow.  
 
 ## Features  
